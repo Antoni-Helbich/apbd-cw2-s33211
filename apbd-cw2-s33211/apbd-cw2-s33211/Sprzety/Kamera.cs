@@ -1,6 +1,18 @@
 ﻿namespace apbd_cw2_s33211.Sprzety;
 
-public class Kamera
+public class Kamera : Sprzet
 {
+    private string Rozdzielczosc {get; set;}
+    private double Ogniskowa { get; set; }
     
+    public Kamera(string nazwa, string rozdzielczosc, double ogniskowa) : base(nazwa)
+    {
+        this.Rozdzielczosc = rozdzielczosc;
+        this.Ogniskowa = ogniskowa;
+    }
+
+    public override string ToString()
+    {
+        return "Kamera: " + Nazwa + ", Rozdzielczość: " + Rozdzielczosc + ", Ogniskowa: " + Ogniskowa;
+    }
 }
