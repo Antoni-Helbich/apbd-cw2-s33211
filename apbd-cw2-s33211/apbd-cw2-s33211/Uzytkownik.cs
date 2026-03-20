@@ -29,7 +29,7 @@ public class Uzytkownik
 
     public override string ToString()
     {
-        return "Użytkownik id: " +  Identyfikator + "Imie i nazwisko: " + Imie + " " + Nazwisko;
+        return "Użytkownik id: " +  Identyfikator + ", Imie i nazwisko: " + Imie + " " + Nazwisko;
     }
 
 }

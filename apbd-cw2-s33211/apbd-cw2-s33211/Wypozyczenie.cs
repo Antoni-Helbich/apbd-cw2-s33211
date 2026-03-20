@@ -9,6 +9,7 @@ public class Wypozyczenie
     public DateTime DataWypozyczenia { get; set; }
     public DateTime DataZwrotu { get; set; }
     public bool? CzyZwrotTerminowy { get; set; }
+    public int Kara { get; set; }
 
     public Wypozyczenie(Uzytkownik uzytkownik, Sprzet sprzet, DateTime dataWypozyczenia, int dni)
     {

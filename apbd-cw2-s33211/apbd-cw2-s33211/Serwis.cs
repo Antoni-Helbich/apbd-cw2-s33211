@@ -68,15 +68,8 @@ public class Serwis
             throw new InvalidOperationException($"Sprzęt {sprzetWypozyczenie.Id} nie jest teraz dostępny do wypożyczenia.");
         }
         
-        int count = 0;
+        int count = PobierzAktywneWypozyczeniaUzytkownika(idUzytkownika).Count;
         int max = uzytkownikWypozyczenie.LimitWypozyczen();
-        foreach (var wypozyczenie in Wypozyczenia)
-        {
-            if (wypozyczenie.Uzytkownik == uzytkownikWypozyczenie && wypozyczenie.CzyZwrotTerminowy == null)
-            {
-                count++;
-            }
-        }
 
         if (count >= max)
         {
@@ -122,7 +115,9 @@ public class Serwis
         else
         {
             wypozyczenieZwrot.CzyZwrotTerminowy = false;
-            return dni * sprzetZwrot.KaraZaDzien; 
+            int kara = dni * sprzetZwrot.KaraZaDzien;
+            wypozyczenieZwrot.Kara = kara;
+            return kara; 
         }
     }
     
