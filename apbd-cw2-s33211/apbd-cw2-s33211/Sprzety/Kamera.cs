@@ -2,8 +2,8 @@
 
 public class Kamera : Sprzet
 {
-    private string Rozdzielczosc {get; set;}
-    private double Ogniskowa { get; set; }
+    public string Rozdzielczosc {get; set;}
+    public double Ogniskowa { get; set; }
     
     public Kamera(string nazwa, string rozdzielczosc, double ogniskowa) : base(nazwa)
     {

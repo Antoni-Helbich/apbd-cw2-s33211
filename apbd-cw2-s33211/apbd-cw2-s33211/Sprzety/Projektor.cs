@@ -2,8 +2,8 @@
 
 public class Projektor : Sprzet
 {
-    private int JasnoscLumeny { get;set; }
-    private string Rozdzielczosc { get;set; }
+    public int JasnoscLumeny { get;set; }
+    public string Rozdzielczosc { get;set; }
 
     public Projektor(string nazwa, int jasnosc, string rozdzielczosc) : base(nazwa)
     {

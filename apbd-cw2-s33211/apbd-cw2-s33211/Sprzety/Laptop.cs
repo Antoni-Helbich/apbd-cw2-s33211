@@ -2,8 +2,8 @@
 
 public class Laptop : Sprzet
 {
-    private int Ram { get; set; }
-    private int PojemnoscDyskuSSD { get; set; }
+    public int Ram { get; set; }
+    public int PojemnoscDyskuSSD { get; set; }
 
     public Laptop(string nazwa, int ram, int dysk) : base(nazwa)
     {
