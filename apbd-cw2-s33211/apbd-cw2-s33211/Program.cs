@@ -16,9 +16,9 @@ class Program
         }
 
         List<Uzytkownik> uzytkownicyDoDodania = new List<Uzytkownik>();
-        uzytkownicyDoDodania.Add(new Uzytkownik("Student", "Antoni", "Helbich"));
-        uzytkownicyDoDodania.Add(new Uzytkownik("Student", "Kuba", "Jastrzębski"));
-        uzytkownicyDoDodania.Add(new Uzytkownik("Pracownik", "John", "Smith"));
+        uzytkownicyDoDodania.Add(new Uzytkownik(UzytkownikType.Student, "Antoni", "Helbich"));
+        uzytkownicyDoDodania.Add(new Uzytkownik(UzytkownikType.Student, "Kuba", "Jastrzębski"));
+        uzytkownicyDoDodania.Add(new Uzytkownik(UzytkownikType.Pracownik, "John", "Smith"));
         foreach (var uzytkownik in uzytkownicyDoDodania)
         { 
             serwis.DodajUzytkownika(uzytkownik); //Dodanie kilku użytkowników

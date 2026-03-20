@@ -104,6 +104,8 @@ public class Serwis
         {
             throw new InvalidOperationException("Nie ma takiego aktywnego wypożyczenia do zwrotu.");
         }
+
+        wypozyczenieZwrot.Sprzet.CzyDostepny = true;
         
         int dni = (dataZwrotu - wypozyczenieZwrot.DataZwrotu).Days;
         

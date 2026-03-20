@@ -7,10 +7,9 @@ public class Uzytkownik
     public string Imie { get; set; }
     public string Nazwisko { get; set; }
 
-    public Uzytkownik(string typ, string imie, string nazwisko)
+    public Uzytkownik(UzytkownikType typ, string imie, string nazwisko)
     {
-        if(typ == "Student") UzytkownikType = UzytkownikType.Student;
-        else if (typ == "Pracownik") UzytkownikType = UzytkownikType.Pracownik;
+        UzytkownikType = typ;
         Identyfikator = "U" + _idNumber++;
         Imie = imie;
         Nazwisko = nazwisko;
