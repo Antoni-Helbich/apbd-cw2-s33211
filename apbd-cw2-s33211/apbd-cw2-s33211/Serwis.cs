@@ -1,11 +1,10 @@
 ﻿using apbd_cw2_s33211.Sprzety;
 namespace apbd_cw2_s33211;
-
 public class Serwis
 {
-    List<Uzytkownik> Uzytkownicy {get;}
-    List<Sprzet> Sprzety {get;}
-    List<Wypozyczenie> Wypozyczenia {get;}
+    public List<Uzytkownik> Uzytkownicy { get; }
+    public List<Sprzet> Sprzety { get; }
+    public List<Wypozyczenie> Wypozyczenia { get; }
 
     public Serwis()
     {
@@ -18,25 +17,20 @@ public class Serwis
     {
         Uzytkownicy.Add(uzytkownik);
     }
+
     public void DodajSprzet(Sprzet sprzet)
     {
         Sprzety.Add(sprzet);
     }
 
-    public void WyswietlUzytkownikow()
+    public List<Uzytkownik> PobierzUzytkownikow()
     {
-        foreach (var uzytkownik in Uzytkownicy)
-        {
-            Console.WriteLine(uzytkownik);
-        }
-        
+        return Uzytkownicy;
     }
-    public void WyswietlSprzet()
+
+    public List<Sprzet> PobierzSprzet()
     {
-        foreach (var sprzet in Sprzety)
-        {
-            Console.WriteLine(sprzet);
-        }
+        return Sprzety;
     }
 
     private Sprzet? ZnajdzSprzet(string idSrzet)
@@ -48,6 +42,7 @@ public class Serwis
 
         return null;
     }
+
     private Uzytkownik? ZnajdzUzytkownika(string idUzytkownika)
     {
         foreach (var uzytkownik in Uzytkownicy)
@@ -62,16 +57,15 @@ public class Serwis
     {
         Sprzet? sprzetWypozyczenie = ZnajdzSprzet(idSprzet);
         Uzytkownik? uzytkownikWypozyczenie = ZnajdzUzytkownika(idUzytkownika);
+
         if (sprzetWypozyczenie == null || uzytkownikWypozyczenie == null)
         {
-            Console.WriteLine("Sprzęt lub użytkownik nie znaleziony. Wypożyczenie anulowane.");
-            return;
+            throw new ArgumentException("Sprzęt lub użytkownik nie został znaleziony.");
         }
         
         if (!sprzetWypozyczenie.CzyDostepny)
         {
-            Console.WriteLine("Sprzęt " + sprzetWypozyczenie + " nie jest teraz dostępny do wypożyczenia. Wypożyczenie anulowane.");
-            return;
+            throw new InvalidOperationException($"Sprzęt {sprzetWypozyczenie.Id} nie jest teraz dostępny do wypożyczenia.");
         }
         
         int count = 0;
@@ -86,23 +80,21 @@ public class Serwis
 
         if (count >= max)
         {
-            Console.WriteLine(uzytkownikWypozyczenie + " osiągnął już limit wypożyczeń. Wypożyczenie anulowane.");
-            return;
+            throw new InvalidOperationException($"Użytkownik {uzytkownikWypozyczenie.Identyfikator} osiągnął limit wypożyczeń.");
         }
-        
         
         Wypozyczenia.Add(new Wypozyczenie(uzytkownikWypozyczenie, sprzetWypozyczenie, DateTime.Now, dni));
         sprzetWypozyczenie.CzyDostepny = false;
     }
 
-    public void ZwrotSprzetu(string idSprzet, string idUzytkownika, DateTime dataZwrotu)
+    public int ZwrotSprzetu(string idSprzet, string idUzytkownika, DateTime dataZwrotu)
     {
-        Sprzet sprzetZwrot =  ZnajdzSprzet(idSprzet);
-        Uzytkownik uzytkownikZwrot = ZnajdzUzytkownika(idUzytkownika);
+        Sprzet? sprzetZwrot = ZnajdzSprzet(idSprzet);
+        Uzytkownik? uzytkownikZwrot = ZnajdzUzytkownika(idUzytkownika);
+
         if (sprzetZwrot == null || uzytkownikZwrot == null)
         {
-            Console.WriteLine("Nie znaleziono użytkownika lub sprzętu. Zwrot anulowany.");
-            return;
+            throw new ArgumentException("Nie znaleziono użytkownika lub sprzętu.");
         }
 
         Wypozyczenie? wypozyczenieZwrot = null;
@@ -117,20 +109,20 @@ public class Serwis
 
         if (wypozyczenieZwrot == null)
         {
-            Console.WriteLine("Nie ma takiego wypożyczenia do zwrotu. Zwrot anulowany.");
-            return;
+            throw new InvalidOperationException("Nie ma takiego aktywnego wypożyczenia do zwrotu.");
         }
         
         int dni = (dataZwrotu - wypozyczenieZwrot.DataZwrotu).Days;
+        
         if (dni <= 0)
         {
-            Console.WriteLine("Zwrot przebiegł pomyślnie.");
             wypozyczenieZwrot.CzyZwrotTerminowy = true;
+            return 0; 
         }
         else
         {
-            Console.WriteLine("Zwrot nieterminowy, dodatkowa opłata o wysokości: " + dni*sprzetZwrot.KaraZaDzien + " zł.");
             wypozyczenieZwrot.CzyZwrotTerminowy = false;
+            return dni * sprzetZwrot.KaraZaDzien; 
         }
     }
     
@@ -139,64 +131,66 @@ public class Serwis
         Sprzet? sprzetNiedostepny = ZnajdzSprzet(idSprzet);
         if (sprzetNiedostepny == null)
         {
-            Console.WriteLine("Nie znaleziono sprzętu.");
-            return;
+            throw new ArgumentException("Nie znaleziono sprzętu.");
         }
 
         if (!sprzetNiedostepny.CzyDostepny)
         {
-            Console.WriteLine("Sprzęt jest już oznaczony jako niedostępny.");
+            throw new InvalidOperationException("Sprzęt jest już oznaczony jako niedostępny.");
         }
-        else
-        {
-            sprzetNiedostepny.CzyDostepny = false;
-        }
+        
+        sprzetNiedostepny.CzyDostepny = false;
     }
 
-    public void WyswietlAktywneWypozyczeniaUzytkownika(string idUzytkownika)
+    public List<Wypozyczenie> PobierzAktywneWypozyczeniaUzytkownika(string idUzytkownika)
     {
         Uzytkownik? uzytkownik = ZnajdzUzytkownika(idUzytkownika);
         if (uzytkownik == null)
         {
-            Console.WriteLine("Nie znaleziono użytkownika.");
-            return;
+            throw new ArgumentException("Nie znaleziono użytkownika.");
         }
         
+        List<Wypozyczenie> aktywneWypozyczenia = new List<Wypozyczenie>();
         foreach (var wypozyczenie in Wypozyczenia)
         {
             if (wypozyczenie.Uzytkownik == uzytkownik && wypozyczenie.CzyZwrotTerminowy == null)
             {
-                Console.WriteLine(wypozyczenie);
+                aktywneWypozyczenia.Add(wypozyczenie);
             }
         }
+
+        return aktywneWypozyczenia;
     }
 
-    public void WyswietlPrzeterminowaneWypozyczenia()
+    public List<Wypozyczenie> PobierzPrzeterminowaneWypozyczenia()
     {
+        List<Wypozyczenie> przeterminowaneWypozyczenia = new List<Wypozyczenie>();
         foreach (var wypozyczenie in Wypozyczenia)
         {
             int dni = (wypozyczenie.DataZwrotu - DateTime.Now).Days;
             if (dni < 0)
             {
-                Console.WriteLine(wypozyczenie);
+                przeterminowaneWypozyczenia.Add(wypozyczenie);
             }
         }
+
+        return przeterminowaneWypozyczenia;
     }
 
-    public string WygenerujRaportWypożyczalni()
+    public string WygenerujRaportWypozyczalni()
     {
-        string raport = "Zapisanych użytkowników: " + Uzytkownicy.Count();
-        raport += "\nZapisanych sprzętów: " + Sprzety.Count();
+        string raport = "Zapisanych użytkowników: " + Uzytkownicy.Count;
+        raport += "\nZapisanych sprzętów: " + Sprzety.Count;
         int dostepne = 0;
         int niedostepne = 0;
         foreach (var sprzet in Sprzety)
         {
             if(sprzet.CzyDostepny) dostepne++;
-            else  niedostepne++;
+            else niedostepne++;
         }
         raport += "\nDostępne sprzęty: " + dostepne;
-        raport += "\nNiedostępne sprzęty: " +  niedostepne;
-        raport += "\nZapisane wypożyczenia: " + Wypozyczenia.Count();
+        raport += "\nNiedostępne sprzęty: " + niedostepne;
+        raport += "\nZapisane wypożyczenia: " + Wypozyczenia.Count;
         int zrealizowane = 0;
         int wToku = 0;
         foreach (var wypozyczenie in Wypozyczenia)
@@ -207,5 +201,4 @@ public class Serwis
         raport += "\nWypożyczenia zrealizowane: " + zrealizowane + ", W toku: " + wToku;
         return raport;
     }
-    
 }
