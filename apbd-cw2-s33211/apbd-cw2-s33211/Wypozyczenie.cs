@@ -10,11 +10,12 @@ public class Wypozyczenie
     public DateTime DataZwrotu { get; set; }
     public bool? CzyZwrotTerminowy { get; set; }
 
-    public Wypozyczenie(Uzytkownik uzytkownik, Sprzet sprzet, DateTime dataWypozyczenia)
+    public Wypozyczenie(Uzytkownik uzytkownik, Sprzet sprzet, DateTime dataWypozyczenia, int dni)
     {
         this.Uzytkownik = uzytkownik;
         this.Sprzet = sprzet;
         this.DataWypozyczenia = dataWypozyczenia;
+        this.DataZwrotu = dataWypozyczenia.AddDays(dni);
         CzyZwrotTerminowy = null;
     }
     

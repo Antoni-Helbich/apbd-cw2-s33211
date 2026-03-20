@@ -59,7 +59,7 @@ public class Serwis
         return null;
     }
 
-    public void WypozyczSprzet(string idSprzet, string idUzytkownika)
+    public void WypozyczSprzet(string idSprzet, string idUzytkownika, int dni)
     {
         Sprzet? sprzetWypozyczenie = ZnajdzSprzet(idSprzet);
         Uzytkownik? uzytkownikWypozyczenie = ZnajdzUzytkownika(idUzytkownika);
@@ -92,7 +92,7 @@ public class Serwis
         }
         
         
-        Wypozyczenia.Add(new Wypozyczenie(uzytkownikWypozyczenie, sprzetWypozyczenie, DateTime.Now));
+        Wypozyczenia.Add(new Wypozyczenie(uzytkownikWypozyczenie, sprzetWypozyczenie, DateTime.Now, dni));
         sprzetWypozyczenie.CzyDostepny = false;
     }
 
@@ -122,6 +122,17 @@ public class Serwis
             return;
         }
         
+        int dni = (dataZwrotu - wypozyczenieZwrot.DataZwrotu).Days;
+        if (dni <= 0)
+        {
+            Console.WriteLine("Zwrot przebiegł pomyślnie.");
+            wypozyczenieZwrot.CzyZwrotTerminowy = true;
+        }
+        else
+        {
+            Console.WriteLine("Zwrot nieterminowy, dodatkowa opłata o wysokości: " + dni*sprzetZwrot.KaraZaDzien + " zł.");
+            wypozyczenieZwrot.CzyZwrotTerminowy = false;
+        }
         
     }
 }

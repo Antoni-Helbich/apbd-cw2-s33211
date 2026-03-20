@@ -9,6 +9,7 @@ public class Projektor : Sprzet
     {
         this.JasnoscLumeny = jasnosc;
         this.Rozdzielczosc = rozdzielczosc;
+        this.KaraZaDzien = 15;
     }
 
     public override string ToString()

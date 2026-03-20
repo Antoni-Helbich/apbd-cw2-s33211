@@ -9,6 +9,7 @@ public class Kamera : Sprzet
     {
         this.Rozdzielczosc = rozdzielczosc;
         this.Ogniskowa = ogniskowa;
+        this.KaraZaDzien = 45;
     }
 
     public override string ToString()

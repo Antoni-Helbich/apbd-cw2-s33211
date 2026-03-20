@@ -9,6 +9,7 @@ public class Laptop : Sprzet
     {
         this.Ram = ram;
         this.PojemnoscDyskuSSD = dysk;
+        this.KaraZaDzien = 100;
     }
 
     public override string ToString()

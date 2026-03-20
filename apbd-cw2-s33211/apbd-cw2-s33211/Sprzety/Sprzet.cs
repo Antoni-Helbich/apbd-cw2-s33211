@@ -6,7 +6,8 @@ public abstract class Sprzet
     public string Id { get; set; }
     public string Nazwa { get; set; }
     public bool CzyDostepny { get; set; }
-
+    public int KaraZaDzien { get; set; }
+    
     public Sprzet(string nazwa)
     {
         Id = "S" + _idNumber++;
