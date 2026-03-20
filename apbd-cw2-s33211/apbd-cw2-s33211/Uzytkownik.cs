@@ -16,6 +16,17 @@ public class Uzytkownik
         Nazwisko = nazwisko;
     }
 
+    public int LimitWypozyczen()
+    {
+        switch (UzytkownikType)
+        {
+            case UzytkownikType.Student: return 2;
+            case UzytkownikType.Pracownik: return 5;
+        }
+
+        return 0;
+    }
+
     public override string ToString()
     {
         return "Użytkownik id: " +  Identyfikator + "Imie i nazwisko: " + Imie + " " + Nazwisko;
