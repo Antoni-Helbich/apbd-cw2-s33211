@@ -1,5 +1,4 @@
-﻿using System.Data;
-using apbd_cw2_s33211.Sprzety;
+﻿using apbd_cw2_s33211.Sprzety;
 namespace apbd_cw2_s33211;
 
 public class Serwis
@@ -133,6 +132,80 @@ public class Serwis
             Console.WriteLine("Zwrot nieterminowy, dodatkowa opłata o wysokości: " + dni*sprzetZwrot.KaraZaDzien + " zł.");
             wypozyczenieZwrot.CzyZwrotTerminowy = false;
         }
-        
     }
+    
+    public void SprzetNiedostepny(string idSprzet)
+    {
+        Sprzet? sprzetNiedostepny = ZnajdzSprzet(idSprzet);
+        if (sprzetNiedostepny == null)
+        {
+            Console.WriteLine("Nie znaleziono sprzętu.");
+            return;
+        }
+
+        if (!sprzetNiedostepny.CzyDostepny)
+        {
+            Console.WriteLine("Sprzęt jest już oznaczony jako niedostępny.");
+        }
+        else
+        {
+            sprzetNiedostepny.CzyDostepny = false;
+        }
+    }
+
+    public void WyswietlAktywneWypozyczeniaUzytkownika(string idUzytkownika)
+    {
+        Uzytkownik? uzytkownik = ZnajdzUzytkownika(idUzytkownika);
+        if (uzytkownik == null)
+        {
+            Console.WriteLine("Nie znaleziono użytkownika.");
+            return;
+        }
+        
+        foreach (var wypozyczenie in Wypozyczenia)
+        {
+            if (wypozyczenie.Uzytkownik == uzytkownik && wypozyczenie.CzyZwrotTerminowy == null)
+            {
+                Console.WriteLine(wypozyczenie);
+            }
+        }
+    }
+
+    public void WyswietlPrzeterminowaneWypozyczenia()
+    {
+        foreach (var wypozyczenie in Wypozyczenia)
+        {
+            int dni = (wypozyczenie.DataZwrotu - DateTime.Now).Days;
+            if (dni < 0)
+            {
+                Console.WriteLine(wypozyczenie);
+            }
+        }
+    }
+
+    public string WygenerujRaportWypożyczalni()
+    {
+        string raport = "Zapisanych użytkowników: " + Uzytkownicy.Count();
+        raport += "\nZapisanych sprzętów: " + Sprzety.Count();
+        int dostepne = 0;
+        int niedostepne = 0;
+        foreach (var sprzet in Sprzety)
+        {
+            if(sprzet.CzyDostepny) dostepne++;
+            else  niedostepne++;
+        }
+        raport += "\nDostępne sprzęty: " + dostepne;
+        raport += "\nNiedostępne sprzęty: " +  niedostepne;
+        raport += "\nZapisane wypożyczenia: " + Wypozyczenia.Count();
+        int zrealizowane = 0;
+        int wToku = 0;
+        foreach (var wypozyczenie in Wypozyczenia)
+        {
+            if(wypozyczenie.CzyZwrotTerminowy == null) wToku++;
+            else zrealizowane++;
+        }
+        raport += "\nWypożyczenia zrealizowane: " + zrealizowane + ", W toku: " + wToku;
+        return raport;
+    }
+    
 }

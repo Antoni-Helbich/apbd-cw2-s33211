@@ -18,5 +18,23 @@ public class Wypozyczenie
         this.DataZwrotu = dataWypozyczenia.AddDays(dni);
         CzyZwrotTerminowy = null;
     }
-    
+
+    public override string ToString()
+    {
+
+        if (CzyZwrotTerminowy == null)
+        {
+            return "Wypożyczenie użytkownika: " +  Uzytkownik.Identyfikator + ", Sprzętu: " + Sprzet.Id + ", do: " + DataZwrotu;
+        }
+        else if (CzyZwrotTerminowy == true)
+        {
+            return "Wypożyczenie użytkownika: " +  Uzytkownik.Identyfikator + ", Sprzętu: " + Sprzet.Id + ", zwrócone terminowo.";
+        }
+        else
+        {
+            return "Wypożyczenie użytkownika: " +  Uzytkownik.Identyfikator + ", Sprzętu: " + Sprzet.Id + ", zwrócone nieterminowo.";
+        }
+        
+        
+    }
 }
