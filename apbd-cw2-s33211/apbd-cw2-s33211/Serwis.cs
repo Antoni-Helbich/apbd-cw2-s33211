@@ -39,53 +39,61 @@ public class Serwis
         }
     }
 
-    public void WypozyczSprzet(string idSprzet, string idUzytkownika)
+    private Sprzet? ZnajdzSprzet(string idSrzet)
     {
-        Sprzet? sprzetWypozyczenie = null;
-        Uzytkownik? uzytkownikWypozyczenie = null;
         foreach (var sprzet in Sprzety)
         {
-            if (idSprzet == sprzet.Id)
-            {
-                sprzetWypozyczenie = sprzet;
-                if (!sprzet.CzyDostepny)
-                {
-                    Console.WriteLine("Sprzęt " + sprzet + " nie jest teraz dostępny do wypożyczenia. Wypożyczenie anulowane.");
-                    return;
-                }
-                sprzet.CzyDostepny = false;
-                break;
-            }
+            if (idSrzet == sprzet.Id) return sprzet;
         }
 
+        return null;
+    }
+    private Uzytkownik? ZnajdzUzytkownika(string idUzytkownika)
+    {
         foreach (var uzytkownik in Uzytkownicy)
         {
-            if (idUzytkownika == uzytkownik.Identyfikator)
-            {
-                uzytkownikWypozyczenie = uzytkownik;
-                int count = 0;
-                int max = uzytkownik.LimitWypozyczen();
-                foreach (var wypozyczenie in Wypozyczenia)
-                {
-                    if (wypozyczenie.Uzytkownik == uzytkownik && wypozyczenie.CzyZwrotTerminowy == null)
-                    {
-                        count++;
-                    }
-                }
-
-                if (count >= max)
-                {
-                    Console.WriteLine(uzytkownik + " osiągnął już limit wypożyczeń. Wypożyczenie anulowane.");
-                    return;
-                }
-            }
+            if (idUzytkownika == uzytkownik.Identyfikator) return uzytkownik;
         }
 
+        return null;
+    }
+
+    public void WypozyczSprzet(string idSprzet, string idUzytkownika)
+    {
+        Sprzet? sprzetWypozyczenie = ZnajdzSprzet(idSprzet);
+        Uzytkownik? uzytkownikWypozyczenie = ZnajdzUzytkownika(idUzytkownika);
         if (sprzetWypozyczenie == null || uzytkownikWypozyczenie == null)
         {
             Console.WriteLine("Sprzęt lub użytkownik nie znaleziony. Wypożyczenie anulowane.");
+            return;
         }
+        
+        if (!sprzetWypozyczenie.CzyDostepny)
+        {
+            Console.WriteLine("Sprzęt " + sprzetWypozyczenie + " nie jest teraz dostępny do wypożyczenia. Wypożyczenie anulowane.");
+            return;
+        }
+        
+        int count = 0;
+        int max = uzytkownikWypozyczenie.LimitWypozyczen();
+        foreach (var wypozyczenie in Wypozyczenia)
+        {
+            if (wypozyczenie.Uzytkownik == uzytkownikWypozyczenie && wypozyczenie.CzyZwrotTerminowy == null)
+            {
+                count++;
+            }
+        }
+
+        if (count >= max)
+        {
+            Console.WriteLine(uzytkownikWypozyczenie + " osiągnął już limit wypożyczeń. Wypożyczenie anulowane.");
+            return;
+        }
+        
+        
         Wypozyczenia.Add(new Wypozyczenie(uzytkownikWypozyczenie, sprzetWypozyczenie, DateTime.Now));
+        sprzetWypozyczenie.CzyDostepny = false;
     }
+    
     
 }
