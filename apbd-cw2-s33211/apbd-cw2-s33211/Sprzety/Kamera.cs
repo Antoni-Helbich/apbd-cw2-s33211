@@ -13,6 +13,6 @@ public class Kamera : Sprzet
 
     public override string ToString()
     {
-        return "Kamera: " + Nazwa + ", Rozdzielczość: " + Rozdzielczosc + ", Ogniskowa: " + Ogniskowa;
+        return "Sprzęt ID: " + Id + ", Kamera: " + Nazwa + ", Rozdzielczość: " + Rozdzielczosc + ", Ogniskowa: " + Ogniskowa;
     }
 }

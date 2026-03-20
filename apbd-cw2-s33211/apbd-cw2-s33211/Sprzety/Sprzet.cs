@@ -2,14 +2,14 @@
 
 public abstract class Sprzet
 {
-    private static int idNumber = 1;
-    public int Id { get; set; }
+    private static int _idNumber = 1;
+    public string Id { get; set; }
     public string Nazwa { get; set; }
     public bool CzyDostepny { get; set; }
 
     public Sprzet(string nazwa)
     {
-        Id = idNumber++;
+        Id = "S" + _idNumber++;
         this.Nazwa = nazwa;
         CzyDostepny = true;
     }

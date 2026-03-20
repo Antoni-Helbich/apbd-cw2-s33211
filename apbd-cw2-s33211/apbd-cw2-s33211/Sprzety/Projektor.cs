@@ -13,6 +13,6 @@ public class Projektor : Sprzet
 
     public override string ToString()
     {
-        return "Projektor: " + Nazwa + ", Jasność: " + JasnoscLumeny + " lumenów, Rozdzielczość: " + Rozdzielczosc;
+        return "Sprzęt ID: " + Id + ", Projektor: " + Nazwa + ", Jasność: " + JasnoscLumeny + " lumenów, Rozdzielczość: " + Rozdzielczosc;
     }
 }

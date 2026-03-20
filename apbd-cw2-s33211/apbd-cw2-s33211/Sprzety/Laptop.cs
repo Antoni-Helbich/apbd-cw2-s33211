@@ -13,6 +13,6 @@ public class Laptop : Sprzet
 
     public override string ToString()
     {
-        return "Laptop: " + Nazwa + ", RAM: " + Ram + " GB, DyskSSD: " +  PojemnoscDyskuSSD + " GB";
+        return "Sprzęt ID: " + Id + ", Laptop: " + Nazwa + ", RAM: " + Ram + " GB, DyskSSD: " +  PojemnoscDyskuSSD + " GB";
     }
 }
