@@ -1,4 +1,5 @@
-﻿using apbd_cw2_s33211.Sprzety;
+﻿using System.Data;
+using apbd_cw2_s33211.Sprzety;
 namespace apbd_cw2_s33211;
 
 public class Serwis
@@ -94,6 +95,33 @@ public class Serwis
         Wypozyczenia.Add(new Wypozyczenie(uzytkownikWypozyczenie, sprzetWypozyczenie, DateTime.Now));
         sprzetWypozyczenie.CzyDostepny = false;
     }
-    
-    
+
+    public void ZwrotSprzetu(string idSprzet, string idUzytkownika, DateTime dataZwrotu)
+    {
+        Sprzet sprzetZwrot =  ZnajdzSprzet(idSprzet);
+        Uzytkownik uzytkownikZwrot = ZnajdzUzytkownika(idUzytkownika);
+        if (sprzetZwrot == null || uzytkownikZwrot == null)
+        {
+            Console.WriteLine("Nie znaleziono użytkownika lub sprzętu. Zwrot anulowany.");
+            return;
+        }
+
+        Wypozyczenie? wypozyczenieZwrot = null;
+        foreach (var wypozyczenie in Wypozyczenia)
+        {
+            if (wypozyczenie.Uzytkownik == uzytkownikZwrot && wypozyczenie.Sprzet == sprzetZwrot &&
+                wypozyczenie.CzyZwrotTerminowy == null)
+            {
+                wypozyczenieZwrot = wypozyczenie;
+            }
+        }
+
+        if (wypozyczenieZwrot == null)
+        {
+            Console.WriteLine("Nie ma takiego wypożyczenia do zwrotu. Zwrot anulowany.");
+            return;
+        }
+        
+        
+    }
 }
