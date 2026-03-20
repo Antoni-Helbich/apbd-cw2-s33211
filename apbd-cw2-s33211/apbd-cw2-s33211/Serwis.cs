@@ -16,11 +16,26 @@ public class Serwis
     {
         Uzytkownicy.Add(uzytkownik);
     }
-
     public void DodajSprzet(Sprzet sprzet)
     {
         Sprzety.Add(sprzet);
     }
-    
+
+    public void WyswietlUzytkownikow()
+    {
+        foreach (var uzytkownik in Uzytkownicy)
+        {
+            Console.WriteLine(uzytkownik);
+        }
+        
+    }
+
+    public void WyswietlSprzet()
+    {
+        foreach (var sprzet in Sprzety)
+        {
+            Console.WriteLine(sprzet);
+        }
+    }
     
 }

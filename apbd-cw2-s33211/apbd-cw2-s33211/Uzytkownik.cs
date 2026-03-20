@@ -16,6 +16,11 @@ public class Uzytkownik
         Nazwisko = nazwisko;
     }
 
+    public override string ToString()
+    {
+        return "Użytkownik id: " +  Identyfikator + "Imie i nazwisko: " + Imie + " " + Nazwisko;
+    }
+
 }
 
 public enum UzytkownikType
